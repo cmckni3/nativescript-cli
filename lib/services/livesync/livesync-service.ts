@@ -325,6 +325,7 @@ export class LiveSyncService extends EventEmitter implements IDebugLiveSyncServi
 	@hook("liveSync")
 	private async liveSyncOperation(deviceDescriptors: ILiveSyncDeviceInfo[], liveSyncData: ILiveSyncInfo, projectData: IProjectData): Promise<void> {
 		let deviceDescriptorsForInitialSync: ILiveSyncDeviceInfo[] = [];
+		await this.$pluginsService.ensureAllDependenciesAreInstalled(projectData);
 
 		if (liveSyncData.syncToPreviewApp) {
 			await this.$previewAppLiveSyncService.initialize({
@@ -337,7 +338,6 @@ export class LiveSyncService extends EventEmitter implements IDebugLiveSyncServi
 				projectDir: projectData.projectDir
 			});
 		} else {
-			await this.$pluginsService.ensureAllDependenciesAreInstalled(projectData);
 			// In case liveSync is called for a second time for the same projectDir.
 			const isAlreadyLiveSyncing = this.liveSyncProcessesInfo[projectData.projectDir] && !this.liveSyncProcessesInfo[projectData.projectDir].isStopped;
 
