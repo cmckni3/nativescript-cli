@@ -141,74 +141,61 @@ or --js flags.)
 	}
 
 	private getJsTemplates() {
-		const templates: {
-			key?: string;
-			value: string;
-			description?: string;
-		}[] = [];
-		templates.push({
+		const templates = [{
 			key: CreateProjectCommand.HelloWorldTemplateKey,
 			value: "tns-template-hello-world",
 			description: CreateProjectCommand.HelloWorldTemplateDescription
-		});
-		templates.push({
+		},
+		{
 			key: CreateProjectCommand.DrawerTemplateKey,
 			value: "tns-template-drawer-navigation",
 			description: CreateProjectCommand.DrawerTemplateDescription
-		});
-		templates.push({
+		},
+		{
 			key: CreateProjectCommand.TabsTemplateKey,
 			value: "tns-template-tab-navigation",
 			description: CreateProjectCommand.TabsTemplateDescription
-		});
+		}];
+
 		return templates;
 	}
 
 	private getTsTemplates() {
-		const templates: {
-			key?: string;
-			value: string;
-			description?: string;
-		}[] = [];
-		templates.push({
+		const templates = [{
 			key: CreateProjectCommand.HelloWorldTemplateKey,
 			value: "tns-template-hello-world-ts",
 			description: CreateProjectCommand.HelloWorldTemplateDescription
-		});
-		templates.push({
+		},
+		{
 			key: CreateProjectCommand.DrawerTemplateKey,
 			value: "tns-template-drawer-navigation-ts",
 			description: CreateProjectCommand.DrawerTemplateDescription
-		});
-		templates.push({
+		},
+		{
 			key: CreateProjectCommand.TabsTemplateKey,
 			value: "tns-template-tab-navigation-ts",
 			description: CreateProjectCommand.TabsTemplateDescription
-		});
+		}];
+
 		return templates;
 	}
 
 	private getNgFlavors() {
-		const templates: {
-			key?: string;
-			value: string;
-			description?: string;
-		}[] = [];
-		templates.push({
+		const templates = [{
 			key: CreateProjectCommand.HelloWorldTemplateKey,
 			value: "tns-template-hello-world-ng",
 			description: CreateProjectCommand.HelloWorldTemplateDescription
-		});
-		templates.push({
+		},
+		{
 			key: CreateProjectCommand.DrawerTemplateKey,
 			value: "tns-template-drawer-navigation-ng",
 			description: CreateProjectCommand.DrawerTemplateDescription
-		});
-		templates.push({
+		},
+		{
 			key: CreateProjectCommand.TabsTemplateKey,
 			value: "tns-template-tab-navigation-ng",
 			description: CreateProjectCommand.TabsTemplateDescription
-		});
+		}];
 
 		return templates;
 	}
