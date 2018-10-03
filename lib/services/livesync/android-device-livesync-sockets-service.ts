@@ -23,15 +23,18 @@ export class AndroidDeviceSocketsLiveSyncService extends AndroidDeviceLiveSyncSe
 		private $fs: IFileSystem,
 		private $devicePlatformsConstants: Mobile.IDevicePlatformsConstants,
 		$filesHashService: IFilesHashService) {
-			super($injector, $platformsData, $filesHashService, $logger, device);
-			this.livesyncTool = this.$injector.resolve(AndroidLivesyncTool);
+		super($injector, $platformsData, $filesHashService, $logger, device);
+		this.livesyncTool = this.$injector.resolve(AndroidLivesyncTool);
 	}
 
 	public async beforeLiveSyncAction(deviceAppData: Mobile.IDeviceAppData): Promise<void> {
-		const pathToLiveSyncFile = temp.path({ prefix: "livesync" });
-		this.$fs.writeFile(pathToLiveSyncFile, "");
-		await this.device.fileSystem.putFile(pathToLiveSyncFile, this.getPathToLiveSyncFileOnDevice(deviceAppData.appIdentifier), deviceAppData.appIdentifier);
-		await this.device.applicationManager.startApplication({ appId: deviceAppData.appIdentifier, projectName: this.data.projectName, justLaunch: true });
+		console.log("Before LiveSync Action called", this.livesyncTool.hasConnection());
+		if (!this.livesyncTool.hasConnection()) {
+			const pathToLiveSyncFile = temp.path({ prefix: "livesync" });
+			this.$fs.writeFile(pathToLiveSyncFile, "");
+			await this.device.fileSystem.putFile(pathToLiveSyncFile, this.getPathToLiveSyncFileOnDevice(deviceAppData.appIdentifier), deviceAppData.appIdentifier);
+			await this.device.applicationManager.startApplication({ appId: deviceAppData.appIdentifier, projectName: this.data.projectName, justLaunch: true });
+		}
 		await this.connectLivesyncTool(this.data.projectIdentifiers.android);
 	}
 
@@ -59,7 +62,7 @@ export class AndroidDeviceSocketsLiveSyncService extends AndroidDeviceLiveSyncSe
 
 		if (liveSyncInfo.modifiedFilesData.length) {
 			const canExecuteFastSync = !liveSyncInfo.isFullSync && this.canExecuteFastSyncForPaths(liveSyncInfo, liveSyncInfo.modifiedFilesData, projectData, this.device.deviceInfo.platform);
-			const doSyncPromise = this.livesyncTool.sendDoSyncOperation({ doRefresh: canExecuteFastSync, operationId});
+			const doSyncPromise = this.livesyncTool.sendDoSyncOperation({ doRefresh: canExecuteFastSync, operationId });
 
 			const syncInterval: NodeJS.Timer = setInterval(() => {
 				if (this.livesyncTool.isOperationInProgress(operationId)) {
